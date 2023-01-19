@@ -21,8 +21,10 @@ class MainMenu
         System.out.println("Press 3 : To Remove an Employee");
         System.out.println("Press 4 : To Update Employee Details");
         System.out.println("Press 5 : To Exit the EMS Portal");
-
+        System.out.println("Press 6 : To Add A New Case");
+        System.out.println("Press 7 : To View Case");
     }
+
 }
 
 /************************ To add details of Employee *********************/
@@ -39,7 +41,7 @@ class Employee_Add
             File f1=new File("file"+emp.employ_id+".txt");
             if(f1.createNewFile()){
                 FileWriter myWriter = new FileWriter("file"+emp.employ_id+".txt");
-                myWriter.write("Employee ID:"+emp.employ_id+"\n"+"Employee Name     :"+emp.name+"\n"+
+                myWriter.write("Employee ID     :"+emp.employ_id+"\n"+"Employee Name     :"+emp.name+"\n"+
                         "Father's Name     :"+emp.father_name+"\n"+"Employee Contact  :"+emp.employ_contact+"\n"+
                         "Email Information :"+emp.email+"\n"+"Employee position :"+emp.position+"\n"+
                         "Employee Salary   :"+emp.employ_salary);
@@ -175,15 +177,16 @@ class EmployManagementSystem
 
         Scanner sc=new Scanner(System.in);
         Employee_Show epv =new Employee_Show();
+        Case_Show cShowOb= new Case_Show();
 
         int i=0;
 
-        /*** Callining Mainmenu Class function ****/
+        /*** Calling Mainmenu Class function ****/
         MainMenu obj1 = new MainMenu();
         obj1.menu();
 
         /*** Initialising loop for Menu Choices ***/
-        while(i<6)
+        while(i<11)
         {
 
             System.out.print("\nPlease Enter choice :");
@@ -271,9 +274,152 @@ class EmployManagementSystem
                     CodeExit obj = new CodeExit();
                     obj.out();
                 }
+                case 6: //add new case
+                {
+                    Case_Add caseOb =new Case_Add();
+                    caseOb.createFile();
+
+                    System.out.print("\033[H\033[2J");
+                    obj1.menu();
+                    break;
+                }
+                case 7:
+                {
+                    System.out.print("\nPlease Enter Case ID :");
+                    String s=sc.nextLine();
+                    try
+                    {
+                        cShowOb.viewCase(s);}
+                    catch(Exception e){System.out.println(e);}
+
+
+                    System.out.print("\nPress Enter to Continue...");
+                    sc.nextLine();
+                    System.out.print("\033[H\033[2J");
+                    obj1.menu();
+                    break;
+                }
             }
         }
     }
 }
 
 /****************************** CODED BY ABHINAV DUBEY ************************/
+class Case{
+    int employeeID;
+    int caseID;
+    String caseName;
+    String caseDate;
+    String clientName;
+    String client_phoneNum;
+    Float paymentTotal;
+    String paymentDate;
+
+    public void getDetail(){
+        Scanner sc=new Scanner(System.in);
+        System.out.print("Enter Employee ID --------: ");
+        employeeID= sc.nextInt();
+        System.out.print("Case ID --------: ");
+        caseID= sc.nextInt();
+        System.out.print("Case Name --------: ");
+        caseName= sc.nextLine();
+        System.out.print("Case Date --------: ");
+        caseDate= sc.nextLine();
+        System.out.print("Client Name --------: ");
+        clientName= sc.nextLine();
+        System.out.print("Client Phone Num: --------: ");
+        client_phoneNum= sc.nextLine();
+        System.out.print("Payment Total --------: ");
+        paymentTotal= sc.nextFloat();
+        System.out.print("Payment Date --------: ");
+        paymentDate= sc.nextLine();
+
+    }
+}
+class Case_Add
+{
+    public void createFile()
+    {
+        Scanner sc=new Scanner(System.in);
+
+        Case caseOb=new Case();
+        caseOb.getDetail();
+        try{
+            File f1=new File("file"+caseOb.caseID+".txt");
+            if(f1.createNewFile()){
+                FileWriter myWriter = new FileWriter("file"+caseOb.caseID+".txt");
+                myWriter.write("Case ID     :"+caseOb.caseID+"\n"+
+                        "Employee ID     :"+caseOb.employeeID+"\n"+
+                        "Case Name     :"+caseOb.caseName+"\n"+
+                        "Case Date     :"+caseOb.caseDate+"\n"+
+                        "Client Name  :"+caseOb.clientName+"\n"+
+                        "Client Phone Number :"+caseOb.client_phoneNum+"\n"+
+                        "Payment total :"+caseOb.paymentTotal+"\n"+
+                        "Payment Date   :"+caseOb.caseDate);
+                myWriter.close();
+                System.out.println("\nCase has been Added :)\n");
+
+                System.out.print("\nPress Enter to Continue...");
+                sc.nextLine();
+            }
+            else {
+                System.out.println("\nCase already exists :(");
+                System.out.print("\nPress Enter to Continue...");
+                sc.nextLine();
+            }
+        }
+        catch(Exception e){System.out.println(e);}
+    }
+}
+
+class Case_Show
+{
+    public void viewCase(String c) throws Exception
+    {
+        File file = new File("file"+c+".txt");
+        Scanner sc = new Scanner(file);
+
+        while (sc.hasNextLine())
+        {
+            System.out.println(sc.nextLine());
+        }
+    }
+}
+
+class Case_Update
+{
+    public void updateFile(String x,String y,String z) throws IOException
+    {
+        File file = new File("file"+x+".txt");
+        Scanner sc = new Scanner(file);
+        String fileContext="";
+        while (sc.hasNextLine())
+        {
+            fileContext =fileContext+"\n"+sc.nextLine();
+        }
+        FileWriter myWriter = new FileWriter("file"+x+".txt");
+        fileContext = fileContext.replaceAll(y,z);
+        myWriter.write(fileContext);
+        myWriter.close();
+    }
+}
+
+class Case_Remove
+{
+    public void removeFile(String ID)
+    {
+
+        File file = new File("file"+ID+".txt");
+        if(file.exists())
+        {
+            if(file.delete());
+            {
+                System.out.println("\nCase has been removed Successfully");
+            }
+        }
+        else
+        {
+            System.out.println("\nCase does not exists :( ");
+        }
+    }
+}
