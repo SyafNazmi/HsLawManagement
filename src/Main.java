@@ -386,6 +386,13 @@ class Case_Show
     }
 }
 
+class Clock_in
+{
+    public void ClockIn(String z) throws Exception{
+        System.out.println("Test Clock In By Huda");
+    }
+}
+
 class Case_Update
 {
     public void updateFile(String x,String y,String z) throws IOException
