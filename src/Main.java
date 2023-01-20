@@ -1,7 +1,14 @@
 /******************** Importing Essential Libraries ************************/
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+import java.util.Scanner;
+import java.time.Duration;
+
 
 
 /*************************** MENU OF EMS ****************************/
@@ -23,6 +30,7 @@ class MainMenu
         System.out.println("Press 5 : To Exit the EMS Portal");
         System.out.println("Press 6 : To Add A New Case");
         System.out.println("Press 7 : To View Case");
+        System.out.println("Press 8 : To Check In and Check Out an Employee");
     }
 
 }
@@ -186,7 +194,7 @@ class EmployManagementSystem
         obj1.menu();
 
         /*** Initialising loop for Menu Choices ***/
-        while(i<11)
+        while(i<12)
         {
 
             System.out.print("\nPlease Enter choice :");
@@ -299,6 +307,12 @@ class EmployManagementSystem
                     obj1.menu();
                     break;
                 }
+                case 8:
+                {
+                    System.out.print("\nChecking In and Checking Out Employees: ");
+                    Clock_in cl = new Clock_in();
+                    break;
+                }
             }
         }
     }
@@ -388,9 +402,57 @@ class Case_Show
 
 class Clock_in
 {
-    public void ClockIn(String z) throws Exception{
-        System.out.println("Test Clock In By Huda");
+    String employee_clocking;
+    LocalDateTime CheckIn;
+    String answer_clock_out;
+    String formatCheckIn;
+    public void ClockIn(EmployDetail obj){
+        Scanner sc=new Scanner(System.in);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        System.out.println("Enter your Employee ID: " );
+        employee_clocking = sc.nextLine();
+
+        if(Objects.equals(obj.employ_id, employee_clocking)) {
+            if (CheckIn == null) {
+                CheckIn = LocalDateTime.now();
+                formatCheckIn = CheckIn.format(format);
+                System.out.println("Your Check In: " + formatCheckIn);
+            }
+            else{
+                System.out.println("You have already checked in.");
+                System.out.println("Your Check In: " + formatCheckIn);
+            }
+
+            System.out.println("Enter Y to Check out or Enter any key to Main Menu: ");
+            answer_clock_out = sc.nextLine();
+            if(Objects.equals(answer_clock_out, "Y")){
+                Clock_Out ob = new Clock_Out();
+            }
+            else{
+
+            }
+        }
+
     }
+}
+
+class Clock_Out{
+    LocalDateTime CheckOut;
+    Duration duration;
+    String formatCheckOut;
+    public void ClockOut(Clock_in ob){
+        CheckOut = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        formatCheckOut = CheckOut.format(format);
+        System.out.println("Your Check Out Time: " + formatCheckOut);
+        duration = Duration.between(ob.CheckIn, CheckOut);
+
+        System.out.println("You have worked for: " + duration.toHours() + " hours, " + duration.toMinutes() + " minutes, " + duration.toSeconds() + " seconds, for today's work.");
+
+
+    }
+
 }
 
 class Case_Update
