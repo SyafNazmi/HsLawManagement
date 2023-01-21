@@ -1,6 +1,8 @@
 /******************** Importing Essential Libraries ************************/
 
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -8,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Scanner;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -37,66 +41,74 @@ class MainMenu
 
 /************************ To add details of Employee *********************/
 
-class Employee_Add
+/*class Employee_Add
 {
     public void createFile()
     {
         Scanner sc=new Scanner(System.in);
 
-        EmployDetail emp=new EmployDetail();
-        emp.getInfo();
-        try{
-            File f1=new File("file"+emp.employ_id+".txt");
-            if(f1.createNewFile()){
-                FileWriter myWriter = new FileWriter("file"+emp.employ_id+".txt");
-                myWriter.write("Employee ID     :"+emp.employ_id+"\n"+"Employee Name     :"+emp.name+"\n"+
-                        "Father's Name     :"+emp.father_name+"\n"+"Employee Contact  :"+emp.employ_contact+"\n"+
-                        "Email Information :"+emp.email+"\n"+"Employee position :"+emp.position+"\n"+
-                        "Employee Salary   :"+emp.employ_salary);
-                myWriter.close();
-                System.out.println("\nEmployee has been Added :)\n");
+        Employees emp=new Employees();
+        emp.getIDLaw();
+        emp.getFirstName();
+        emp.getLastName();
+        emp.getContact();
+        emp.getPosition();
+        emp.getSalary();
 
-                System.out.print("\nPress Enter to Continue...");
-                sc.nextLine();
-            }
-            else {
-                System.out.println("\nEmployee already exists :(");
-                System.out.print("\nPress Enter to Continue...");
-                sc.nextLine();
-            }
-        }
-        catch(Exception e){System.out.println(e);}
+
     }
-}
+}*/
 
 /************************* Taking Employee Details ************************/
 
-class EmployDetail
-{
-    String name;
-    String father_name;
-    String email;
+class Employees {
+    String IDLaw;
+    String firstName;
+    String lastName;
+    int contact;
     String position;
-    String employ_id;
-    String employ_salary;
-    String employ_contact;
-    public void getInfo()
-    {
-        Scanner sc=new Scanner(System.in);
-        System.out.print("Enter Employee's name --------: ");
-        name=sc.nextLine();
-        System.out.print("Enter Employee's Father name -: ");
-        father_name=sc.nextLine();
-        System.out.print("Enter Employee's ID ----------: ");
-        employ_id=sc.nextLine();
-        System.out.print("Enter Employee's Email ID ----: ");
-        email=sc.nextLine();
-        System.out.print("Enter Employee's Position ----: ");
-        position=sc.nextLine();
-        System.out.print("Enter Employee contact Info --: ");
-        employ_contact=sc.nextLine();
-        System.out.print("Enter Employee's Salary ------: ");
-        employ_salary=sc.nextLine();
+    int salary;
+
+
+
+    public String getIDLaw() {
+        return IDLaw;
+    }
+    public void setIDLaw(String IDLaw) {
+        this.IDLaw = IDLaw;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getContact(){
+        return contact;
+    }
+    public void setContact(int contact){
+        this.contact = contact;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getSalary(){
+        return salary;
+    }
+    public void setSalary(int salary){
+        this.salary = salary;
     }
 }
 
@@ -206,8 +218,8 @@ class EmployManagementSystem
                 case 1:
                 {
                     /** Creating class's object and calling Function using that object **/
-                    Employee_Add ep =new Employee_Add();
-                    ep.createFile();
+                    Employee_Add ep = new Employee_Add();
+                    ep.csv();
 
                     System.out.print("\033[H\033[2J");
                     obj1.menu();
@@ -309,8 +321,9 @@ class EmployManagementSystem
                 }
                 case 8:
                 {
-                    System.out.print("\nChecking In and Checking Out Employees: ");
+                    System.out.println("Enter your Employee ID: " );
                     Clock_in cl = new Clock_in();
+                    cl.employee_clocking = sc.nextLine();
                     break;
                 }
             }
@@ -402,18 +415,18 @@ class Case_Show
 
 class Clock_in
 {
-    String employee_clocking;
+    String employee_clocking;       //employee id- check the id in database
     LocalDateTime CheckIn;
     String answer_clock_out;
     String formatCheckIn;
-    public void ClockIn(EmployDetail obj){
+    public void ClockIn(Employees obj){
         Scanner sc=new Scanner(System.in);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
         System.out.println("Enter your Employee ID: " );
         employee_clocking = sc.nextLine();
 
-        if(Objects.equals(obj.employ_id, employee_clocking)) {
+        if(Objects.equals(obj.IDLaw, employee_clocking)) {
             if (CheckIn == null) {
                 CheckIn = LocalDateTime.now();
                 formatCheckIn = CheckIn.format(format);
@@ -490,5 +503,126 @@ class Case_Remove
         {
             System.out.println("\nCase does not exists :( ");
         }
+    }
+}
+
+class Employee_Add {
+
+    public static void csv () {
+
+        String filePath = "employees.csv";
+
+        System.out.println("starting write user.csv file: " + filePath);
+        writeCsv(filePath);
+
+        System.out.println("starting read user.csv file");
+        readCsv(filePath);
+    }
+
+    public static void writeCsv(String filePath) {
+        ArrayList<Employees> users = new ArrayList<Employees>();
+        int val;
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of users you want to add: ");
+        val = Integer.parseInt(sc.nextLine());
+        for(int i=0;i<val;i++)
+        {
+            String emp_id;
+            System.out.print("Enter the ID Lawyer: ");
+            emp_id = sc.nextLine();
+            String first_name;
+            System.out.print("Enter the first name: ");
+            first_name = sc.nextLine();
+            String last_name;
+            System.out.print("Enter the last name: ");
+            last_name = sc.nextLine();
+            int emp_contact;
+            System.out.print("Enter Contact: ");
+            emp_contact = Integer.parseInt(sc.nextLine());
+            String emp_position;
+            System.out.print("Enter the position: ");
+            emp_position = sc.nextLine();
+            int emp_salary;
+            System.out.print("Enter Salary: ");
+            emp_salary = Integer.parseInt(sc.nextLine());
+
+            Employees user = new Employees();
+            user.setIDLaw(emp_id);
+            user.setFirstName(first_name);
+            user.setLastName(last_name);
+            user.setContact(emp_contact);
+            user.setPosition(emp_position);
+            user.setSalary(emp_salary);
+            users.add(user);
+        }
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filePath);
+            fileWriter.append("ID Law, First Name, Last Name, Contact, Position, Salary\n");
+            for(Employees u: users) {
+                fileWriter.append(u.getIDLaw());
+                fileWriter.append(",");
+                fileWriter.append(u.getFirstName());
+                fileWriter.append(",");
+                fileWriter.append(u.getLastName());
+                fileWriter.append(",");
+                fileWriter.append(String.valueOf(u.getContact()));
+                fileWriter.append(",");
+                fileWriter.append(u.getPosition());
+                fileWriter.append(",");
+                fileWriter.append(String.valueOf(u.getSalary()));
+                fileWriter.append("\n");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void readCsv(String filePath) {
+        BufferedReader reader = null;
+
+        try {
+            List<Employees> users = new ArrayList<Employees>();
+            String line = "";
+            reader = new BufferedReader(new FileReader(filePath));
+            reader.readLine();
+
+            while((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
+
+                if(fields.length > 0) {
+                    Employees user = new Employees();
+                    user.setIDLaw(fields[0]);
+                    user.setFirstName(fields[1]);
+                    user.setLastName(fields[2]);
+                    user.setContact(Integer.parseInt(fields[3]));
+                    user.setPosition(fields[4]);
+                    user.setSalary(Integer.parseInt(fields[5]));
+                    users.add(user);
+                }
+            }
+
+            for(Employees u: users) {
+                System.out.printf("[userId=%s, firstName=%s, lastName=%s, contact=%d, position=%s, salary=%d]\n",
+                        u.getIDLaw(), u.getFirstName(), u.getLastName(),
+                        u.getContact(), u.getPosition(), u.getSalary());
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
