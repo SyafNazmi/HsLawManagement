@@ -1,17 +1,13 @@
 /******************** Importing Essential Libraries ************************/
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.Scanner;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 
 
@@ -29,13 +25,13 @@ class MainMenu
         System.out.println("\t\t\t     Modified by: Huda, Sofea & Syafie");
         System.out.println("\t\t\t    --------------------");
         System.out.println("\n\nPress 1 : To Add an Employee Details");
-        System.out.println("Press 2 : To See an Employee Details ");
-        System.out.println("Press 3 : To Remove an Employee");
-        System.out.println("Press 4 : To Update Employee Details");
-        System.out.println("Press 5 : To Exit the EMS Portal");
-        System.out.println("Press 6 : To Add A New Case");
-        System.out.println("Press 7 : To View Case");
-        System.out.println("Press 8 : To Check In and Check Out an Employee");
+     //   System.out.println("Press 2 : To See an Employee Details ");
+     //   System.out.println("Press 3 : To Remove an Employee");
+      //  System.out.println("Press 4 : To Update Employee Details");
+        System.out.println("Press 2 : To Exit the EMS Portal");
+        System.out.println("Press 3 : To Add A New Case");
+      //  System.out.println("Press 7 : To View Case");
+        System.out.println("Press 4 : To Check In and Check Out an Employee");
     }
 
 }
@@ -111,66 +107,68 @@ class Employees {
     public void setSalary(int salary){
         this.salary = salary;
     }
+
+
 }
 
 /************************ To Show details of Employee *********************/
 
-class Employee_Show
-{
-    public void viewFile(String s) throws Exception
-    {
-        File file = new File("file"+s+".txt");
-        Scanner sc = new Scanner(file);
-
-        while (sc.hasNextLine())
-        {
-            System.out.println(sc.nextLine());
-        }
-    }
-}
+//class Employee_Show
+//{
+//    public void viewFile(String s) throws Exception
+//    {
+//        File file = new File("file"+s+".txt");
+//        Scanner sc = new Scanner(file);
+//
+//        while (sc.hasNextLine())
+//        {
+//            System.out.println(sc.nextLine());
+//        }
+//    }
+//}
 
 /***************************** To Remove Employee *************************/
 
-class Employee_Remove
-{
-    public void removeFile(String ID)
-    {
-
-        File file = new File("file"+ID+".txt");
-        if(file.exists())
-        {
-            if(file.delete());
-            {
-                System.out.println("\nEmployee has been removed Successfully");
-            }
-        }
-        else
-        {
-            System.out.println("\nEmployee does not exists :( ");
-        }
-    }
-}
+//class Employee_Remove
+//{
+//    public void removeFile(String ID)
+//    {
+//
+//        File file = new File("file"+ID+".txt");
+//        if(file.exists())
+//        {
+//            if(file.delete());
+//            {
+//                System.out.println("\nEmployee has been removed Successfully");
+//            }
+//        }
+//        else
+//        {
+//            System.out.println("\nEmployee does not exists :( ");
+//        }
+//    }
+//}
 
 /************************ To Update details of Employee ********************/
 
-class Employee_Update
-{
-    public void updateFile(String s,String o,String n) throws IOException
-    {
-        File file = new File("file"+s+".txt");
-        Scanner sc = new Scanner(file);
-        String fileContext="";
-        while (sc.hasNextLine())
-        {
-            fileContext =fileContext+"\n"+sc.nextLine();
-        }
-        FileWriter myWriter = new FileWriter("file"+s+".txt");
-        fileContext = fileContext.replaceAll(o,n);
-        myWriter.write(fileContext);
-        myWriter.close();
-
-    }
-}
+//class Employee_Update
+//{
+//    public void updateFile(String s,String o,String n) throws IOException
+//    {
+//        File file = new File("file"+s+".txt");
+//        Scanner sc = new Scanner(file);
+//        String fileContext="";
+//        while (sc.hasNextLine())
+//        {
+//            fileContext =fileContext+"\n"+sc.nextLine();
+//        }
+//        FileWriter myWriter = new FileWriter("file"+s+".txt");
+//        fileContext = fileContext.replaceAll(o,n);
+//        myWriter.write(fileContext);
+//        myWriter.close();
+//
+//    }
+//}
 
 
 /************************ To Exit from the EMS Portal *********************/
@@ -191,14 +189,13 @@ class CodeExit
 /***************************** Main Class *******************************/
 class EmployManagementSystem
 {
-    public static void main(String arv[])
-    {
+    public static void main(String arv[]) throws FileNotFoundException {
         /** To clear the output Screen **/
         System.out.print("\033[H\033[2J");
 
         Scanner sc=new Scanner(System.in);
-        Employee_Show epv =new Employee_Show();
-        Case_Show cShowOb= new Case_Show();
+    //    Employee_Show epv =new Employee_Show();
+     //   Case_Show cShowOb= new Case_Show();
 
         int i=0;
 
@@ -216,7 +213,7 @@ class EmployManagementSystem
             /** Switch Case Statements **/
             switch(i)
             {
-                case 1:
+                case 1: //adding new employees and saving into csv file
                 {
                     /** Creating class's object and calling Function using that object **/
                     Employee_Add ep = new Employee_Add();
@@ -226,76 +223,76 @@ class EmployManagementSystem
                     obj1.menu();
                     break;
                 }
+//                case 2:
+//                {
+//                    System.out.print("\nPlease Enter Employee's ID :");
+//                    String s=sc.nextLine();
+//                    try
+//                    {
+//                        epv.viewFile(s);}
+//                    catch(Exception e){System.out.println(e);}
+//
+//
+//                    System.out.print("\nPress Enter to Continue...");
+//                    sc.nextLine();
+//                    System.out.print("\033[H\033[2J");
+//                    obj1.menu();
+//                    break;
+//                }
+
+//                case 3:
+//                {
+//                    System.out.print("\nPlease Enter Employee's ID :");
+//                    String s=sc.nextLine();
+//                    Employee_Remove epr =new Employee_Remove();
+//                    epr.removeFile(s);
+//
+//                    System.out.print("\nPress Enter to Continue...");
+//                    sc.nextLine();
+//                    System.out.print("\033[H\033[2J");
+//                    obj1.menu();
+//                    break;
+//                }
+//                case 4:
+//                {
+//                    System.out.print("\nPlease Enter Employee's ID :");
+//                    String I=sc.nextLine();
+//                    try
+//                    {
+//                        epv.viewFile(I);
+//                    }
+//                    catch(Exception e)
+//                    {
+//                        System.out.println(e);
+//                    }
+//                    Employee_Update epu = new Employee_Update();
+//                    System.out.print("Please Enter the detail you want to Update :");
+//                    System.out.print("\nFor Example :\n");
+//                    System.out.println("If you want to Change the Name, then Enter Current Name and Press Enter. Then write the new Name then Press Enter. It will Update the Name.\n");
+//                    String s=sc.nextLine();
+//                    System.out.print("Please Enter the Updated Info :");
+//                    String n=sc.nextLine();
+//                    try
+//                    {
+//                        epu.updateFile(I,s,n);
+//
+//                        System.out.print("\nPress Enter to Continue...");
+//                        sc.nextLine();
+//                        System.out.print("\033[H\033[2J");
+//                        obj1.menu();
+//                        break;
+//                    }
+//                    catch(IOException e)
+//                    {
+//                        System.out.println(e);
+//                    }
+//                }
                 case 2:
-                {
-                    System.out.print("\nPlease Enter Employee's ID :");
-                    String s=sc.nextLine();
-                    try
-                    {
-                        epv.viewFile(s);}
-                    catch(Exception e){System.out.println(e);}
-
-
-                    System.out.print("\nPress Enter to Continue...");
-                    sc.nextLine();
-                    System.out.print("\033[H\033[2J");
-                    obj1.menu();
-                    break;
-                }
-
-                case 3:
-                {
-                    System.out.print("\nPlease Enter Employee's ID :");
-                    String s=sc.nextLine();
-                    Employee_Remove epr =new Employee_Remove();
-                    epr.removeFile(s);
-
-                    System.out.print("\nPress Enter to Continue...");
-                    sc.nextLine();
-                    System.out.print("\033[H\033[2J");
-                    obj1.menu();
-                    break;
-                }
-                case 4:
-                {
-                    System.out.print("\nPlease Enter Employee's ID :");
-                    String I=sc.nextLine();
-                    try
-                    {
-                        epv.viewFile(I);
-                    }
-                    catch(Exception e)
-                    {
-                        System.out.println(e);
-                    }
-                    Employee_Update epu = new Employee_Update();
-                    System.out.print("Please Enter the detail you want to Update :");
-                    System.out.print("\nFor Example :\n");
-                    System.out.println("If you want to Change the Name, then Enter Current Name and Press Enter. Then write the new Name then Press Enter. It will Update the Name.\n");
-                    String s=sc.nextLine();
-                    System.out.print("Please Enter the Updated Info :");
-                    String n=sc.nextLine();
-                    try
-                    {
-                        epu.updateFile(I,s,n);
-
-                        System.out.print("\nPress Enter to Continue...");
-                        sc.nextLine();
-                        System.out.print("\033[H\033[2J");
-                        obj1.menu();
-                        break;
-                    }
-                    catch(IOException e)
-                    {
-                        System.out.println(e);
-                    }
-                }
-                case 5:
                 {
                     CodeExit obj = new CodeExit();
                     obj.out();
                 }
-                case 6: //add new case
+                case 3: //add new case
                 {
                     Case_Add caseOb =new Case_Add();
                     caseOb.csv();
@@ -304,27 +301,26 @@ class EmployManagementSystem
                     obj1.menu();
                     break;
                 }
-                case 7:
+//                case 7:
+//                {
+//                    System.out.print("\nPlease Enter Case ID :");
+//                    String s=sc.nextLine();
+//                    try
+//                    {
+//                        cShowOb.viewCase(s);}
+//                    catch(Exception e){System.out.println(e);}
+//
+//
+//                    System.out.print("\nPress Enter to Continue...");
+//                    sc.nextLine();
+//                    System.out.print("\033[H\033[2J");
+//                    obj1.menu();
+//                    break;
+//                }
+                case 4: //clocking in and out
                 {
-                    System.out.print("\nPlease Enter Case ID :");
-                    String s=sc.nextLine();
-                    try
-                    {
-                        cShowOb.viewCase(s);}
-                    catch(Exception e){System.out.println(e);}
-
-
-                    System.out.print("\nPress Enter to Continue...");
-                    sc.nextLine();
-                    System.out.print("\033[H\033[2J");
-                    obj1.menu();
-                    break;
-                }
-                case 8:
-                {
-                    System.out.println("Enter your Employee ID: " );
                     Clock_in cl = new Clock_in();
-                    cl.employee_clocking = sc.nextLine();
+                    cl.ClockIn();
                     break;
                 }
             }
@@ -356,9 +352,9 @@ class Case{
     public String getClientName() {return clientName;}
     public void setClientName(String clientName) {this.clientName = clientName;}
     public int getClient_contact() {return client_contact;}
-    public void setClient_contact(int client_contact) {this.client_contact = Integer.parseInt(String.valueOf(client_contact));}
+    public void setClient_contact(int client_contact) {this.client_contact = client_contact;}
     public int getPaymentTotal() {return paymentTotal;}
-    public void setPaymentTotal(int paymentTotal) {this.paymentTotal = Integer.parseInt(String.valueOf(paymentTotal));}
+    public void setPaymentTotal(int paymentTotal) {this.paymentTotal = paymentTotal;}
     public String getPaymentDate() {return paymentDate;}
     public void setPaymentDate(String paymentDate) {this.paymentDate = paymentDate;}
 }
@@ -422,7 +418,7 @@ class Case_Add
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(filePath);
-            fileWriter.append("ID Law, First Name, Last Name, Contact, Position, Salary\n");
+            fileWriter.append("ID Lawyer, ID Case, Case Name, Case Date, Client Name, Client Contact, Payment Total, Payment Date\n");
             for(Case c: cases) {
                 fileWriter.append(c.getEmployeeID());
                 fileWriter.append(",");
@@ -434,9 +430,9 @@ class Case_Add
                 fileWriter.append(",");
                 fileWriter.append(c.getClientName());
                 fileWriter.append(",");
-                fileWriter.append(Character.highSurrogate(c.getClient_contact()));
+                fileWriter.append(String.valueOf(c.getClient_contact()));
                 fileWriter.append(",");
-                fileWriter.append(Character.highSurrogate(c.getPaymentTotal()));
+                fileWriter.append(String.valueOf(c.getPaymentTotal()));
                 fileWriter.append(",");
                 fileWriter.append(c.getPaymentDate());
                 fileWriter.append("\n");
@@ -479,8 +475,8 @@ class Case_Add
             }
 
             for(Case c:cases) {
-                System.out.printf("[employeeId=%s, caseId=%s, caseName=%s, caseDate=%s, clientName=%d, " +
-                                "clientContact=%s, paymentTotal=%d, paymentDate=%s]\n",
+                System.out.printf("[employeeId=%s, caseId=%s, caseName=%s, caseDate=%s, clientName=%s, " +
+                                "clientContact=%d, paymentTotal=%d, paymentDate=%s]\n",
                         c.getEmployeeID(), c.getCaseID(), c.getCaseName(), c.getCaseDate(),
                         c.getClientName(), c.getClient_contact(), c.getPaymentTotal(), c.getPaymentDate());
             }
@@ -515,18 +511,20 @@ class Case_Show
 
 class Clock_in
 {
-    String employee_clocking;       //employee id- check the id in database
-    LocalDateTime CheckIn;
-    String answer_clock_out;
-    String formatCheckIn;
-    public void ClockIn(Employees obj){
+    public LocalDateTime CheckIn;
+    public String formatCheckIn;
+
+    public void ClockIn(){
+        String employee_clocking;
+        String answer_clock_out;
+
         Scanner sc=new Scanner(System.in);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
         System.out.println("Enter your Employee ID: " );
         employee_clocking = sc.nextLine();
+        Employees obj = new Employees();
 
-        if(Objects.equals(obj.IDLaw, employee_clocking)) {
             if (CheckIn == null) {
                 CheckIn = LocalDateTime.now();
                 formatCheckIn = CheckIn.format(format);
@@ -540,21 +538,23 @@ class Clock_in
             System.out.println("Enter Y to Check out or Enter any key to Main Menu: ");
             answer_clock_out = sc.nextLine();
             if(Objects.equals(answer_clock_out, "Y")){
-                Clock_Out ob = new Clock_Out();
+                Clock_Out cl = new Clock_Out();
+                cl.ClockOut();
             }
             else{
 
             }
         }
 
-    }
+
 }
 
 class Clock_Out{
-    LocalDateTime CheckOut;
-    Duration duration;
-    String formatCheckOut;
-    public void ClockOut(Clock_in ob){
+    public LocalDateTime CheckOut;
+    public Duration duration;
+    public String formatCheckOut;
+    public void ClockOut(){
+        Clock_in ob = new Clock_in();
         CheckOut = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         formatCheckOut = CheckOut.format(format);
@@ -608,7 +608,7 @@ class Case_Remove
 
 class Employee_Add {
 
-    public static void csv () {
+    public static void csv () throws FileNotFoundException {
 
         String filePath = "employees.csv";
 
@@ -684,8 +684,8 @@ class Employee_Add {
             }
         }
     }
-    public static void readCsv(String filePath) {
-        BufferedReader reader = null;
+    public static void readCsv(String filePath) throws FileNotFoundException {
+        BufferedReader reader = new BufferedReader(new FileReader("employees.csv"));
 
         try {
             List<Employees> users = new ArrayList<Employees>();
