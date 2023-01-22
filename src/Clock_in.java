@@ -1,17 +1,13 @@
 /******************** Importing Essential Libraries ************************/
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.Scanner;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 
 
@@ -110,6 +106,8 @@ class Employees {
     public void setSalary(int salary){
         this.salary = salary;
     }
+
+
 }
 
 /************************ To Show details of Employee *********************/
@@ -321,9 +319,8 @@ class EmployManagementSystem
                 }
                 case 8:
                 {
-                    System.out.println("Enter your Employee ID: " );
                     Clock_in cl = new Clock_in();
-                    cl.employee_clocking = sc.nextLine();
+                    cl.ClockIn();
                     break;
                 }
             }
@@ -355,9 +352,9 @@ class Case{
     public String getClientName() {return clientName;}
     public void setClientName(String clientName) {this.clientName = clientName;}
     public int getClient_contact() {return client_contact;}
-    public void setClient_contact(int client_contact) {this.client_contact = Integer.parseInt(String.valueOf(client_contact));}
+    public void setClient_contact(int client_contact) {this.client_contact = client_contact;}
     public int getPaymentTotal() {return paymentTotal;}
-    public void setPaymentTotal(int paymentTotal) {this.paymentTotal = Integer.parseInt(String.valueOf(paymentTotal));}
+    public void setPaymentTotal(int paymentTotal) {this.paymentTotal = paymentTotal;}
     public String getPaymentDate() {return paymentDate;}
     public void setPaymentDate(String paymentDate) {this.paymentDate = paymentDate;}
 }
@@ -421,7 +418,7 @@ class Case_Add
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(filePath);
-            fileWriter.append("ID Law, First Name, Last Name, Contact, Position, Salary\n");
+            fileWriter.append("ID Lawyer, ID Case, Case Name, Case Date, Client Name, Client Contact, Payment Total, Payment Date\n");
             for(Case c: cases) {
                 fileWriter.append(c.getEmployeeID());
                 fileWriter.append(",");
@@ -433,9 +430,9 @@ class Case_Add
                 fileWriter.append(",");
                 fileWriter.append(c.getClientName());
                 fileWriter.append(",");
-                fileWriter.append(Character.highSurrogate(c.getClient_contact()));
+                fileWriter.append(String.valueOf(c.getClient_contact()));
                 fileWriter.append(",");
-                fileWriter.append(Character.highSurrogate(c.getPaymentTotal()));
+                fileWriter.append(String.valueOf(c.getPaymentTotal()));
                 fileWriter.append(",");
                 fileWriter.append(c.getPaymentDate());
                 fileWriter.append("\n");
@@ -478,8 +475,8 @@ class Case_Add
             }
 
             for(Case c:cases) {
-                System.out.printf("[employeeId=%s, caseId=%s, caseName=%s, caseDate=%s, clientName=%d, " +
-                                "clientContact=%s, paymentTotal=%d, paymentDate=%s]\n",
+                System.out.printf("[employeeId=%s, caseId=%s, caseName=%s, caseDate=%s, clientName=%s, " +
+                                "clientContact=%d, paymentTotal=%d, paymentDate=%s]\n",
                         c.getEmployeeID(), c.getCaseID(), c.getCaseName(), c.getCaseDate(),
                         c.getClientName(), c.getClient_contact(), c.getPaymentTotal(), c.getPaymentDate());
             }
@@ -514,18 +511,20 @@ class Case_Show
 
 class Clock_in
 {
-    String employee_clocking;       //employee id- check the id in database
-    LocalDateTime CheckIn;
-    String answer_clock_out;
-    String formatCheckIn;
-    public void ClockIn(Employees obj){
+    public LocalDateTime CheckIn = null;
+    public String formatCheckIn;
+
+    public void ClockIn(){
+        String employee_clocking;
+        String answer_clock_out;
+
         Scanner sc=new Scanner(System.in);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
         System.out.println("Enter your Employee ID: " );
         employee_clocking = sc.nextLine();
-
-        if(Objects.equals(obj.IDLaw, employee_clocking)) {
+        Employees obj = new Employees();
+        if(obj.IDLaw == employee_clocking) {
             if (CheckIn == null) {
                 CheckIn = LocalDateTime.now();
                 formatCheckIn = CheckIn.format(format);
@@ -539,7 +538,8 @@ class Clock_in
             System.out.println("Enter Y to Check out or Enter any key to Main Menu: ");
             answer_clock_out = sc.nextLine();
             if(Objects.equals(answer_clock_out, "Y")){
-                Clock_Out ob = new Clock_Out();
+                Clock_Out cl = new Clock_Out();
+                cl.ClockOut();
             }
             else{
 
@@ -550,10 +550,11 @@ class Clock_in
 }
 
 class Clock_Out{
-    LocalDateTime CheckOut;
-    Duration duration;
-    String formatCheckOut;
-    public void ClockOut(Clock_in ob){
+    public LocalDateTime CheckOut;
+    public Duration duration;
+    public String formatCheckOut;
+    public void ClockOut(){
+        Clock_in ob = new Clock_in();
         CheckOut = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         formatCheckOut = CheckOut.format(format);
