@@ -297,7 +297,7 @@ class EmployManagementSystem
                 case 6: //add new case
                 {
                     Case_Add caseOb =new Case_Add();
-                    caseOb.createFile();
+                    caseOb.csv();
 
                     System.out.print("\033[H\033[2J");
                     obj1.menu();
@@ -333,70 +333,169 @@ class EmployManagementSystem
 
 /****************************** CODED BY ABHINAV DUBEY ************************/
 class Case{
-    int employeeID;
-    int caseID;
+    String employeeID;
+    String caseID;
     String caseName;
     String caseDate;
     String clientName;
-    String client_phoneNum;
-    Float paymentTotal;
+    int client_contact;
+    int paymentTotal;
     String paymentDate;
 
-    public void getDetail(){
-        Scanner sc=new Scanner(System.in);
-        System.out.print("Enter Employee ID --------: ");
-        employeeID= sc.nextInt();
-        System.out.print("Case ID --------: ");
-        caseID= sc.nextInt();
-        System.out.print("Case Name --------: ");
-        caseName= sc.nextLine();
-        System.out.print("Case Date --------: ");
-        caseDate= sc.nextLine();
-        System.out.print("Client Name --------: ");
-        clientName= sc.nextLine();
-        System.out.print("Client Phone Num: --------: ");
-        client_phoneNum= sc.nextLine();
-        System.out.print("Payment Total --------: ");
-        paymentTotal= sc.nextFloat();
-        System.out.print("Payment Date --------: ");
-        paymentDate= sc.nextLine();
-
+    public String getEmployeeID() {return employeeID;}
+    public void setEmployeeID(String employeeID) {this.employeeID = employeeID;}
+    public String getCaseID() {
+        return caseID;
     }
+    public void setCaseID(String caseID) {this.caseID = caseID;}
+    public String getCaseName() {return caseName;}
+    public void setCaseName(String caseName) {this.caseName = caseName;}
+    public String getCaseDate() {return caseDate;}
+    public void setCaseDate(String caseDate) {this.caseDate = caseDate;}
+    public String getClientName() {return clientName;}
+    public void setClientName(String clientName) {this.clientName = clientName;}
+    public int getClient_contact() {return client_contact;}
+    public void setClient_contact(int client_contact) {this.client_contact = Integer.parseInt(String.valueOf(client_contact));}
+    public int getPaymentTotal() {return paymentTotal;}
+    public void setPaymentTotal(int paymentTotal) {this.paymentTotal = Integer.parseInt(String.valueOf(paymentTotal));}
+    public String getPaymentDate() {return paymentDate;}
+    public void setPaymentDate(String paymentDate) {this.paymentDate = paymentDate;}
 }
 class Case_Add
 {
-    public void createFile()
-    {
-        Scanner sc=new Scanner(System.in);
+    public static void csv () {
 
-        Case caseOb=new Case();
-        caseOb.getDetail();
-        try{
-            File f1=new File("file"+caseOb.caseID+".txt");
-            if(f1.createNewFile()){
-                FileWriter myWriter = new FileWriter("file"+caseOb.caseID+".txt");
-                myWriter.write("Case ID     :"+caseOb.caseID+"\n"+
-                        "Employee ID     :"+caseOb.employeeID+"\n"+
-                        "Case Name     :"+caseOb.caseName+"\n"+
-                        "Case Date     :"+caseOb.caseDate+"\n"+
-                        "Client Name  :"+caseOb.clientName+"\n"+
-                        "Client Phone Number :"+caseOb.client_phoneNum+"\n"+
-                        "Payment total :"+caseOb.paymentTotal+"\n"+
-                        "Payment Date   :"+caseOb.caseDate);
-                myWriter.close();
-                System.out.println("\nCase has been Added :)\n");
+        String filePath = "case.csv";
 
-                System.out.print("\nPress Enter to Continue...");
-                sc.nextLine();
+        System.out.println("starting write user.csv file: " + filePath);
+        writeCsv(filePath);
+
+        System.out.println("starting read user.csv file");
+        readCsv(filePath);
+    }
+
+        public static void writeCsv(String filePath) {
+        ArrayList<Case> cases = new ArrayList<Case>();
+        int val;
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of users you want to add: ");
+        val = Integer.parseInt(sc.nextLine());
+        for(int i=0;i<val;i++)
+        {
+            String emp_id;
+            System.out.print("Enter the employee ID: ");
+            emp_id = sc.nextLine();
+            String case_id;
+            System.out.print("Enter the case ID: ");
+            case_id = sc.nextLine();
+            String case_name;
+            System.out.print("Enter the case name: ");
+            case_name = sc.nextLine();
+            String case_date;
+            System.out.print("Enter case date: ");
+            case_date = sc.nextLine();
+            String client_name;
+            System.out.print("Enter the client's name: ");
+            client_name = sc.nextLine();
+            int client_contact;
+            System.out.print("Enter Contact: ");
+            client_contact = Integer.parseInt(sc.nextLine());
+            int payment_total;
+            System.out.print("Enter payment total: ");
+            payment_total = Integer.parseInt(sc.nextLine());
+            String payment_date;
+            System.out.print("Enter the payment date: ");
+            payment_date = sc.nextLine();
+
+            Case obj = new Case();
+            obj.setEmployeeID(emp_id);
+            obj.setCaseID(case_id);
+            obj.setCaseName(case_name);
+            obj.setCaseDate(case_date);
+            obj.setClientName(client_name);
+            obj.setClient_contact(client_contact);
+            obj.setPaymentTotal(payment_total);
+            obj.setPaymentDate(payment_date);
+            cases.add(obj);
+        }
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filePath);
+            fileWriter.append("ID Law, First Name, Last Name, Contact, Position, Salary\n");
+            for(Case c: cases) {
+                fileWriter.append(c.getEmployeeID());
+                fileWriter.append(",");
+                fileWriter.append(c.getCaseID());
+                fileWriter.append(",");
+                fileWriter.append(c.getCaseName());
+                fileWriter.append(",");
+                fileWriter.append(c.getCaseDate());
+                fileWriter.append(",");
+                fileWriter.append(c.getClientName());
+                fileWriter.append(",");
+                fileWriter.append(Character.highSurrogate(c.getClient_contact()));
+                fileWriter.append(",");
+                fileWriter.append(Character.highSurrogate(c.getPaymentTotal()));
+                fileWriter.append(",");
+                fileWriter.append(c.getPaymentDate());
+                fileWriter.append("\n");
             }
-            else {
-                System.out.println("\nCase already exists :(");
-                System.out.print("\nPress Enter to Continue...");
-                sc.nextLine();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        catch(Exception e){System.out.println(e);}
     }
+        public static void readCsv(String filePath) {
+        BufferedReader reader = null;
+
+        try {
+            List<Case> cases = new ArrayList<Case>();
+            String line = "";
+            reader = new BufferedReader(new FileReader(filePath));
+            reader.readLine();
+
+            while((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
+
+                if(fields.length > 0) {
+                    Case obj = new Case();
+                    obj.setEmployeeID(fields[0]);
+                    obj.setCaseID(fields[1]);
+                    obj.setCaseName(fields[2]);
+                    obj.setCaseDate(fields[3]);
+                    obj.setClientName(fields[4]);
+                    obj.setClient_contact(Integer.parseInt(fields[5]));
+                    obj.setPaymentTotal(Integer.parseInt(fields[6]));
+                    obj.setPaymentDate(fields[7]);
+                    cases.add(obj);
+                }
+            }
+
+            for(Case c:cases) {
+                System.out.printf("[employeeId=%s, caseId=%s, caseName=%s, caseDate=%s, clientName=%d, " +
+                                "clientContact=%s, paymentTotal=%d, paymentDate=%s]\n",
+                        c.getEmployeeID(), c.getCaseID(), c.getCaseName(), c.getCaseDate(),
+                        c.getClientName(), c.getClient_contact(), c.getPaymentTotal(), c.getPaymentDate());
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 }
 
 class Case_Show
