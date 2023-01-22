@@ -25,7 +25,8 @@ class MainMenu
         System.out.println("\t\t\t  EMPLOYEE MANAGEMENT SYSTEM");
         System.out.println("\t\t*******************************************");
         System.out.println("\t\t\t    --------------------");
-        System.out.println("\t\t\t     ~$ Abhinav Dubey");
+        System.out.println("\t\t\t     Original Programmer: Abhinav Dubey");
+        System.out.println("\t\t\t     Modified by: Huda, Sofea & Syafie");
         System.out.println("\t\t\t    --------------------");
         System.out.println("\n\nPress 1 : To Add an Employee Details");
         System.out.println("Press 2 : To See an Employee Details ");
