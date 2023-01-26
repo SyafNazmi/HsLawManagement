@@ -4,29 +4,26 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Client {
 
-    private SimpleStringProperty clientcase;
+    private SimpleStringProperty Idcase;
     private SimpleStringProperty clientID;
     private SimpleStringProperty clientName;
     private SimpleStringProperty clientContact;
     private SimpleStringProperty clientPayment;
-    private SimpleStringProperty clientDob;
 
-    public Client(String clientcase, String clientID, String clientName, String clientContact, String clientPayment, String dob) {
-        this.clientcase = new SimpleStringProperty(clientcase);
+
+    public Client(String IDcase, String clientID, String clientName, String clientContact, String clientPayment) {
+        this.Idcase = new SimpleStringProperty(IDcase);
         this.clientID = new SimpleStringProperty(clientID);
         this.clientName = new SimpleStringProperty(clientName);
         this.clientContact = new SimpleStringProperty(clientContact);
         this.clientPayment = new SimpleStringProperty(clientPayment);
-        this.clientDob = new SimpleStringProperty(dob);
     }
 
-    public String getClientcase() {
-        return clientcase.get();
+    public String getIdcase(){
+        return  Idcase.get();
     }
-
-
-    public void setClientcase(String clientcase) {
-        this.clientcase.set(clientcase);
+    public  void setIdcase(String IDcase){
+        this.Idcase.set(IDcase);
     }
 
     public String getClientID() {
@@ -65,12 +62,5 @@ public class Client {
         this.clientPayment.set(clientPayment);
     }
 
-    public String getClientDob() {
-        return clientDob.get();
-    }
-
-    public void setClientDob(String clientDob) {
-        this.clientDob.set(clientDob);
-    }
 }
 

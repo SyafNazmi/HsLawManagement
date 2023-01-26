@@ -4,15 +4,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GuiController implements Initializable {
+
+    @FXML
+    Tab clienttab;
 
     @FXML
     public TableView<Lawyer> tvLawyer;
@@ -47,12 +53,14 @@ public class GuiController implements Initializable {
     private TextField idcaseFld;
 
     //Client
-    @FXML
+    /*@FXML
     public TableView<Lawyer> tvClient;
     @FXML
     public TableColumn<Client, String> tcCaseid, tcIdclient, tcName, tcClientcontact, tcPayment, tcDob;
     @FXML
     private TextField idClient, NameFld, Clientcontact, paymentFld, idcaseFld2, paymentDate;
+
+     */
 
 
 
@@ -62,8 +70,11 @@ public class GuiController implements Initializable {
 
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         // Lawyer tableview
         tcld.setCellValueFactory(new PropertyValueFactory<>("LawyerID"));
         tcFName.setCellValueFactory(new PropertyValueFactory<>("LawyerFirstName"));
@@ -75,6 +86,7 @@ public class GuiController implements Initializable {
 
         tvLawyer.setItems(observableList);
 
+        /*
         // Client tableview
         tcCaseid.setCellValueFactory(new PropertyValueFactory<>("ClientCaseID"));
         tcIdclient.setCellValueFactory(new PropertyValueFactory<>("ClientID"));
@@ -85,6 +97,16 @@ public class GuiController implements Initializable {
 
         tvClient.setItems(observableList);
 
+         */
+
+        FXMLLoader loader = new FXMLLoader();
+        try{
+            AnchorPane secondscene = loader.load(getClass().getResource("client.fxml"));
+            clienttab.setContent(secondscene);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
@@ -94,6 +116,7 @@ public class GuiController implements Initializable {
             new Lawyer("AB3", "Sofea", "Taufik", "06345478", "Intern Council", "1500", "CTS8")
             //new Client("CTS8", "C22", "Ahmad Khuzaimi", "01453644", "300", "22/01/2023")
     );
+
     //Add New controller
     public void handleButtonClick(ActionEvent event) {
         Lawyer addLawyer = new Lawyer(idFld.getText(), fnameFld.getText(), lnameFld.getText(), contactFld.getText(),

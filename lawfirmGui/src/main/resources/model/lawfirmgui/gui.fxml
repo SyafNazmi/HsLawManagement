@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainscene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="1095.0" style="-fx-background-color: #F8EDE3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.lawfirmgui.GuiController">
+<AnchorPane  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="1095.0" style="-fx-background-color: #F8EDE3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="model.lawfirmgui.GuiController">
     <children>
         <BorderPane layoutX="-3.0" prefHeight="587.0" prefWidth="1100.0">
             <left>
@@ -80,7 +80,7 @@
             <center>
                 <TabPane prefHeight="200.0" prefWidth="200.0" styleClass="tab" stylesheets="@../../style.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                     <tabs>
-                        <Tab text="Lawyer">
+                        <Tab fx:id="lawyertab" text="Lawyer">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -144,9 +144,9 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="Client">
+                        <Tab fx:id="clienttab" text="Client">
                             <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                <AnchorPane fx:id="secondscene" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
                                         <BorderPane layoutX="-1.0" layoutY="5.0" prefHeight="486.0" prefWidth="893.0">
                                             <top>
