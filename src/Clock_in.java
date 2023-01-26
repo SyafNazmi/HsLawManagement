@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 
-
 /*************************** MENU OF EMS ****************************/
 
 class MainMenu
@@ -25,13 +24,14 @@ class MainMenu
         System.out.println("\t\t\t     Modified by: Huda, Sofea & Syafie");
         System.out.println("\t\t\t    --------------------");
         System.out.println("\n\nPress 1 : To Add an Employee Details");
-        System.out.println("Press 2 : To See an Employee Details ");
-        System.out.println("Press 3 : To Remove an Employee");
-        System.out.println("Press 4 : To Update Employee Details");
+     //   System.out.println("Press 2 : To See an Employee Details ");
+     //   System.out.println("Press 3 : To Remove an Employee");
+      //  System.out.println("Press 4 : To Update Employee Details");
         System.out.println("Press 2 : To Exit the EMS Portal");
-        System.out.println("Press 3 : To Add A New Client");
-        System.out.println("Press 7 : To View Client");
+        System.out.println("Press 3 : To Add A New Case");
+      //  System.out.println("Press 7 : To View Case");
         System.out.println("Press 4 : To Check In and Check Out an Employee");
+        System.out.println("Press 5 : To View Employees");
     }
 
 }
@@ -62,11 +62,30 @@ class Employees {
     String IDLaw;
     String firstName;
     String lastName;
-    int contact;
+    String contact;
     String position;
-    int salary;
+    String salary;
+
+    LocalDateTime clockIn;
+    LocalDateTime clockOut;
 
 
+    public Employees(String IDLaw, String firstName, String lastName, String contact, String position, String salary) {
+        this.IDLaw = IDLaw;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contact = contact;
+        this.position = position;
+        this.salary = salary;
+    }
+
+    public void setClockIn(LocalDateTime clockIn) {
+        this.clockIn = clockIn;
+    }
+
+    public void setClockOut(LocalDateTime clockOut) {
+        this.clockOut = clockOut;
+    }
 
     public String getIDLaw() {
         return IDLaw;
@@ -87,10 +106,10 @@ class Employees {
         this.lastName = lastName;
     }
 
-    public int getContact(){
+    public String getContact(){
         return contact;
     }
-    public void setContact(int contact){
+    public void setContact(String contact){
         this.contact = contact;
     }
 
@@ -101,14 +120,117 @@ class Employees {
         this.position = position;
     }
 
-    public int getSalary(){
+    public String getSalary(){
         return salary;
     }
-    public void setSalary(int salary){
+    public void setSalary(String salary){
         this.salary = salary;
     }
 
+    public LocalDateTime getClockIn() {
+        return clockIn;
+    }
 
+    public LocalDateTime getClockOut() {
+        return clockOut;
+    }
+}
+
+class EmployeeDatabase {
+    private static EmployeeDatabase instance;
+    private static List<Employees> employees = new ArrayList<>();
+
+    public EmployeeDatabase() {}
+
+    public void addEmployee() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the employee's ID: ");
+        String IDLaw = input.nextLine();
+        System.out.print("Enter the employee's first name: ");
+        String firstName = input.nextLine();
+        System.out.print("Enter the employee's last name: ");
+        String lastName = input.nextLine();
+        System.out.print("Enter the employee's contact: ");
+        String contact = input.nextLine();
+        System.out.print("Enter the employee's position: ");
+        String position = input.nextLine();
+        System.out.print("Enter the employee's salary: ");
+        String salary = input.nextLine();
+
+
+        employees.add(new Employees(IDLaw, firstName, lastName, contact, position, salary));
+    }
+
+    public void readCsv(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                String IDLaw = values[0];
+                String firstName = values[1];
+                String lastName = values[2];
+                String contact = values[3];
+                String position = values[4];
+                String salary = values[5];
+                Employees employee = new Employees(IDLaw, firstName, lastName, contact, position, salary);
+                employees.add(employee);
+            }
+            for(Employees u: employees) {
+                System.out.printf("[userId=%s, firstName=%s, lastName=%s, contact=%s, position=%s, salary=%s]\n",
+                        u.getIDLaw(), u.getFirstName(), u.getLastName(),
+                        u.getContact(), u.getPosition(), u.getSalary());
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while reading the file: " + e.getMessage());
+        }
+    }
+
+    public void writeCsv(String fileName) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+            for (Employees employee : employees) {
+
+                bw.write(employee.getIDLaw() + "," + employee.getFirstName() + "," + employee.getLastName() +"," + employee.getContact() +
+                        "," + employee.getPosition() + "," + employee.getSalary());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing the file: " + e.getMessage());
+        }
+    }
+
+    public Employees verifyEmployeeId(String employeeId) {
+        for (Employees employee : employees) {
+            if (employee.getIDLaw().equals(employeeId)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+    public static EmployeeDatabase getInstance() {
+        if (instance == null) {
+            instance = new EmployeeDatabase();
+        }
+        return instance;
+    }
+
+//    public void matchEmployee(String IDLaw) {
+//        employees.add(new Employees(IDLaw));
+//    }
+
+    public static boolean checkCredentials(String IDLaw) {
+        for (Employees employee : employees) {
+            if (employee.getIDLaw().equals(IDLaw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void setAccounts(List<Employees> accounts) {
+        this.employees = employees;
+    }
+    public List<Employees> getAccounts() {
+        return employees;
+    }
 }
 
 /************************ To Show details of Employee *********************/
@@ -189,13 +311,19 @@ class CodeExit
 /***************************** Main Class *******************************/
 class EmployManagementSystem
 {
-    public static void main(String arv[]) throws FileNotFoundException {
+    public static void main(String arv[]) throws IOException {
         /** To clear the output Screen **/
         System.out.print("\033[H\033[2J");
 
         Scanner sc=new Scanner(System.in);
     //    Employee_Show epv =new Employee_Show();
      //   Case_Show cShowOb= new Case_Show();
+
+        List<Employees> employees = new ArrayList<>();
+       // employees = Employee_Add.readCsv();
+       // EmployeeDatabase.getInstance().setEmpl
+//        EmployeeDatabase db = new EmployeeDatabase();
+//        EmployeeDatabase.readCsv("employees.csv");
 
         int i=0;
 
@@ -216,9 +344,17 @@ class EmployManagementSystem
                 case 1: //adding new employees and saving into csv file
                 {
                     /** Creating class's object and calling Function using that object **/
-                    Employee_Add ep = new Employee_Add();
-                    ep.csv();
-
+                    EmployeeDatabase db = new EmployeeDatabase();
+                    Scanner input = new Scanner(System.in);
+                    System.out.print("How many employees do you want to add? ");
+                    int numEmployees = input.nextInt();
+                    for (int j = 0; j < numEmployees; j++) {
+                        db.addEmployee();
+                    }
+                    System.out.print("The name of the CSV file to write: ");
+                    String fileName = "employees.csv";
+                    db.writeCsv(fileName);
+                    System.out.print("\n ");
                     System.out.print("\033[H\033[2J");
                     obj1.menu();
                     break;
@@ -323,6 +459,32 @@ class EmployManagementSystem
                     cl.ClockIn();
                     break;
                 }
+                case 5: //view employee
+                {
+                    EmployeeDatabase db = new EmployeeDatabase();
+                    String fileName = "employees.csv";
+                    System.out.println("starting read user.csv file: " + fileName + "\n");
+                    db.readCsv(fileName);
+
+                    break;
+
+                }
+                case 6: //search via employee ID
+                {
+                    EmployeeDatabase ed = new EmployeeDatabase();
+                    ed.readCsv("employees.csv");
+                    System.out.println("Enter the Employee ID to check: ");
+                    String checkID = sc.nextLine();
+                    Employees employee = ed.verifyEmployeeId(checkID);
+                    if (employee != null) {
+                        System.out.println("Employee found: " + employee.getFirstName() + " " + employee.getLastName());
+                    } else {
+                        System.out.println("Employee ID not found.");
+                    }
+
+                    break;
+
+                }
             }
         }
     }
@@ -357,6 +519,8 @@ class Case{
     public void setPaymentTotal(int paymentTotal) {this.paymentTotal = paymentTotal;}
     public String getPaymentDate() {return paymentDate;}
     public void setPaymentDate(String paymentDate) {this.paymentDate = paymentDate;}
+
+
 }
 class Case_Add
 {
@@ -514,40 +678,50 @@ class Clock_in
     public LocalDateTime CheckIn;
     public String formatCheckIn;
 
-    public void ClockIn(){
-        String employee_clocking;
+    public void ClockIn() throws IOException {
+        List<Employees> users = new ArrayList<Employees>();
+        String IDLaw;
         String answer_clock_out;
 
-        Scanner sc=new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-        System.out.println("Enter your Employee ID: " );
-        employee_clocking = sc.nextLine();
-        Employees obj = new Employees();
 
+        EmployeeDatabase ed = new EmployeeDatabase();
+        ed.readCsv("employees.csv");
+        System.out.println("Enter the Employee ID to check: ");
+        String checkID = sc.nextLine();
+        Employees employee = ed.verifyEmployeeId(checkID);
+        if (employee != null) {
+            System.out.println("Employee exists: " + employee.getFirstName() + " " + employee.getLastName());
             if (CheckIn == null) {
                 CheckIn = LocalDateTime.now();
                 formatCheckIn = CheckIn.format(format);
                 System.out.println("Your Check In: " + formatCheckIn);
-            }
-            else{
+              //  ed.writeCsv("employees.csv", checkID, formatCheckIn, null);
+            } else {
                 System.out.println("You have already checked in.");
                 System.out.println("Your Check In: " + formatCheckIn);
             }
 
-            System.out.println("Enter Y to Check out or Enter any key to Main Menu: ");
-            answer_clock_out = sc.nextLine();
-            if(Objects.equals(answer_clock_out, "Y")){
-                Clock_Out cl = new Clock_Out();
-                cl.ClockOut();
-            }
-            else{
 
-            }
+        } else {
+            System.out.println("Employee ID not found.");
         }
 
 
-}
+            System.out.println("Enter Y to Check out or Enter any key to Main Menu: ");
+            answer_clock_out = sc.nextLine();
+            if (Objects.equals(answer_clock_out, "Y")) {
+                Clock_Out cl = new Clock_Out();
+                cl.ClockOut();
+            } else {
+
+            }
+        }
+    }
+
+
 
 class Clock_Out{
     public LocalDateTime CheckOut;
@@ -606,123 +780,68 @@ class Case_Remove
     }
 }
 
-class Employee_Add {
+//class Employee_Add {
+//
+//    public static void csv() {
+//
+//        String filePath = "employees.csv";
+//
+//        System.out.println("starting write user.csv file: " + filePath);
+//        writeCsv(filePath);
+//
+//        System.out.println("starting read user.csv file");
+//        readCsv(filePath);
+//    }
 
-    public static void csv () throws FileNotFoundException {
-
-        String filePath = "employees.csv";
-
-        System.out.println("starting write user.csv file: " + filePath);
-        writeCsv(filePath);
-
-        System.out.println("starting read user.csv file");
-        readCsv(filePath);
-    }
-
-    public static void writeCsv(String filePath) {
-        ArrayList<Employees> users = new ArrayList<Employees>();
-        int val;
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the number of users you want to add: ");
-        val = Integer.parseInt(sc.nextLine());
-        for(int i=0;i<val;i++)
-        {
-            String emp_id;
-            System.out.print("Enter the ID Lawyer: ");
-            emp_id = sc.nextLine();
-            String first_name;
-            System.out.print("Enter the first name: ");
-            first_name = sc.nextLine();
-            String last_name;
-            System.out.print("Enter the last name: ");
-            last_name = sc.nextLine();
-            int emp_contact;
-            System.out.print("Enter Contact: ");
-            emp_contact = Integer.parseInt(sc.nextLine());
-            String emp_position;
-            System.out.print("Enter the position: ");
-            emp_position = sc.nextLine();
-            int emp_salary;
-            System.out.print("Enter Salary: ");
-            emp_salary = Integer.parseInt(sc.nextLine());
-
-            Employees user = new Employees();
-            user.setIDLaw(emp_id);
-            user.setFirstName(first_name);
-            user.setLastName(last_name);
-            user.setContact(emp_contact);
-            user.setPosition(emp_position);
-            user.setSalary(emp_salary);
-            users.add(user);
-        }
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(filePath);
-            fileWriter.append("ID Law, First Name, Last Name, Contact, Position, Salary\n");
-            for(Employees u: users) {
-                fileWriter.append(u.getIDLaw());
-                fileWriter.append(",");
-                fileWriter.append(u.getFirstName());
-                fileWriter.append(",");
-                fileWriter.append(u.getLastName());
-                fileWriter.append(",");
-                fileWriter.append(String.valueOf(u.getContact()));
-                fileWriter.append(",");
-                fileWriter.append(u.getPosition());
-                fileWriter.append(",");
-                fileWriter.append(String.valueOf(u.getSalary()));
-                fileWriter.append("\n");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public static void readCsv(String filePath) throws FileNotFoundException {
-        BufferedReader reader = new BufferedReader(new FileReader("employees.csv"));
-
-        try {
-            List<Employees> users = new ArrayList<Employees>();
-            String line = "";
-            reader = new BufferedReader(new FileReader(filePath));
-            reader.readLine();
-
-            while((line = reader.readLine()) != null) {
-                String[] fields = line.split(",");
-
-                if(fields.length > 0) {
-                    Employees user = new Employees();
-                    user.setIDLaw(fields[0]);
-                    user.setFirstName(fields[1]);
-                    user.setLastName(fields[2]);
-                    user.setContact(Integer.parseInt(fields[3]));
-                    user.setPosition(fields[4]);
-                    user.setSalary(Integer.parseInt(fields[5]));
-                    users.add(user);
-                }
-            }
-
-            for(Employees u: users) {
-                System.out.printf("[userId=%s, firstName=%s, lastName=%s, contact=%d, position=%s, salary=%d]\n",
-                        u.getIDLaw(), u.getFirstName(), u.getLastName(),
-                        u.getContact(), u.getPosition(), u.getSalary());
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                reader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-}
+//    public void addEmployee() {
+//        Scanner input = new Scanner(System.in);
+//        System.out.print("Enter the employee's ID: ");
+//        String IDLaw = input.nextLine();
+//        System.out.print("Enter the employee's first name: ");
+//        String firstName = input.nextLine();
+//        System.out.print("Enter the employee's last name: ");
+//        String lastName = input.nextLine();
+//        System.out.print("Enter the employee's contact: ");
+//        String contact = input.nextLine();
+//        System.out.print("Enter the employee's position: ");
+//        String position = input.nextLine();
+//        System.out.print("Enter the employee's salary: ");
+//        String salary = input.nextLine();
+//
+//
+//        employees.add(new Employees(IDLaw, firstName, lastName, contact, position, salary));
+//    }
+//
+//    public void readCsv(String fileName) {
+//        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                String[] values = line.split(",");
+//                String IDLaw = values[0];
+//                String firstName = values[1];
+//                String lastName = values[2];
+//                String contact = values[3];
+//                String position = values[4];
+//                String salary = values[5];
+//                Employees employee = new Employees(IDLaw, firstName, lastName, contact, position, salary);
+//                employees.add(employee);
+//            }
+//        } catch (IOException e) {
+//            System.out.println("An error occurred while reading the file: " + e.getMessage());
+//        }
+//    }
+//
+//    public void writeCsv(String fileName) {
+//        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+//            for (Employees employee : employees) {
+//                bw.write(employee.getIDLaw() + "," + employee.getFirstName() + "," + employee.getLastName() +"," + employee.getContact()
+//                        "," + employee.getPosition() + "," + employee.getSalary());
+//                bw.newLine();
+//            }
+//        } catch (IOException e) {
+//            System.out.println("An error occurred while writing the file: " + e.getMessage());
+//        }
+//    }
+//}
+//
+//}
