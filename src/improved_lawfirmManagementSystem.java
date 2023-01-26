@@ -30,7 +30,7 @@ class MainMenu
         System.out.println("Press 4 : To Update Employee Details");
         System.out.println("Press 2 : To Exit the EMS Portal");
         System.out.println("Press 3 : To Add A New Client");
-        System.out.println("Press 7 : To View View");
+        System.out.println("Press 7 : To View Client");
         System.out.println("Press 4 : To Check In and Check Out an Employee");
     }
 
