@@ -46,18 +46,6 @@
                                 <Insets left="30.0" />
                             </padding>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="53.0" mnemonicParsing="false" onAction="#CheckInOnAction" prefHeight="43.0" prefWidth="210.0" stylesheets="@../../style.css" text="Clock In Time" textFill="WHITE">
-                            <padding>
-                                <Insets left="30.0" />
-                            </padding>
-                        </Button>
-                        <Label fx:id="CheckInTimeDisplay" prefHeight="18.0" prefWidth="208.0" />
-                        <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="10.0" layoutY="96.0" mnemonicParsing="false" onAction="#CheckOutOnAction" prefHeight="43.0" prefWidth="210.0" stylesheets="@../../style.css" text="Clock Out Time" textFill="WHITE">
-                            <padding>
-                                <Insets left="30.0" />
-                            </padding>
-                        </Button>
-                        <Label fx:id="CheckOutTimeDisplay" layoutX="10.0" layoutY="140.0" prefHeight="18.0" prefWidth="208.0" />
                     </children>
                 </VBox>
             </left>
@@ -113,15 +101,15 @@
                                                 </HBox>
                                             </top>
                                             <center>
-                                                <TableView fx:id="tvLawyer" prefHeight="200.0" prefWidth="200.0" styleClass="table-cell" stylesheets="@../../style.css" BorderPane.alignment="CENTER">
+                                                <TableView fx:id="tvLawyer" prefHeight="227.0" prefWidth="731.0" styleClass="table-cell" stylesheets="@../../style.css" BorderPane.alignment="CENTER">
                                                     <columns>
                                                         <TableColumn fx:id="tcld" prefWidth="75.0" text="IDlaw" />
+                                                        <TableColumn fx:id="tcFName" prefWidth="106.34051513671875" text="FirstName" />
                                                         <TableColumn fx:id="tcLName" prefWidth="103.159423828125" text="LastName" />
                                                         <TableColumn fx:id="tcContact" prefWidth="101.8011474609375" text="Contact" />
                                                         <TableColumn fx:id="tcPosition" prefWidth="99.6036376953125" text="Position" />
                                                         <TableColumn fx:id="tcSalary" prefWidth="107.7276611328125" text="Salary" />
                                                         <TableColumn fx:id="tcId_case" prefWidth="84.22637939453125" text="IDcase" />
-                                                        <TableColumn fx:id="tcFName" prefWidth="106.34051513671875" text="FirstName" />
                                                     </columns>
                                                     <columnResizePolicy>
                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -151,6 +139,24 @@
                                                     </children>
                                                 </AnchorPane>
                                             </bottom>
+                                 <right>
+                                    <VBox prefHeight="227.0" prefWidth="172.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                                <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#CheckInOnAction" prefHeight="43.0" prefWidth="210.0" stylesheets="@../../style.css" text="Check In " textFill="WHITE">
+                                                    <padding>
+                                                        <Insets left="30.0" />
+                                                    </padding>
+                                                </Button>
+                                                <Label fx:id="CheckInTimeDisplay" prefHeight="48.0" prefWidth="191.0" />
+                                                <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#CheckOutOnAction" prefHeight="43.0" prefWidth="210.0" stylesheets="@../../style.css" text="Check Out " textFill="WHITE">
+                                                    <padding>
+                                                        <Insets left="30.0" />
+                                                    </padding>
+                                                </Button>
+                                                <Label fx:id="CheckOutTimeDisplay" prefHeight="47.0" prefWidth="191.0" />
+                                       </children>
+                                    </VBox>
+                                 </right>
                                         </BorderPane>
                                     </children>
                                 </AnchorPane>

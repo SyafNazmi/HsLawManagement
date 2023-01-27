@@ -135,6 +135,7 @@ public class GuiController implements Initializable {
         formatCheckIn = CheckIn.format(format);
 
         CheckInTimeDisplay.setText("Time: "+formatCheckIn);
+
     }
 
     public void CheckOutOnAction (ActionEvent e){
