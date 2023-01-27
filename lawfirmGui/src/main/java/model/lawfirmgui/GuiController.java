@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class GuiController implements Initializable {
@@ -52,19 +54,10 @@ public class GuiController implements Initializable {
     @FXML
     private TextField idcaseFld;
 
-    //Client
-    /*@FXML
-    public TableView<Lawyer> tvClient;
     @FXML
-    public TableColumn<Client, String> tcCaseid, tcIdclient, tcName, tcClientcontact, tcPayment, tcDob;
-    @FXML
-    private TextField idClient, NameFld, Clientcontact, paymentFld, idcaseFld2, paymentDate;
-
-     */
+    private Label CheckInTimeDisplay, CheckOutTimeDisplay;
 
 
-
-    //Button available
     @FXML
     private Button btnDeletelaw, btnUpdate;
 
@@ -86,18 +79,6 @@ public class GuiController implements Initializable {
 
         tvLawyer.setItems(observableList);
 
-        /*
-        // Client tableview
-        tcCaseid.setCellValueFactory(new PropertyValueFactory<>("ClientCaseID"));
-        tcIdclient.setCellValueFactory(new PropertyValueFactory<>("ClientID"));
-        tcName.setCellValueFactory(new PropertyValueFactory<>("ClientName"));
-        tcClientcontact.setCellValueFactory(new PropertyValueFactory<>("ClientContact"));
-        //tcPayment.setCellValueFactory(new PropertyValueFactory<>("ClientPayment"));
-        tcDob.setCellValueFactory(new PropertyValueFactory<>("ClientPaymentDate"));
-
-        tvClient.setItems(observableList);
-
-         */
 
         FXMLLoader loader = new FXMLLoader();
         try{
@@ -114,7 +95,6 @@ public class GuiController implements Initializable {
             new Lawyer("AB1", "Huda", "Nabilah", "05345223", "High Council", "4500", "C1D3"),
             new Lawyer("AB2", "Syafie", "Nazmi", "04345123", "Mid Council", "3500", "C1S3"),
             new Lawyer("AB3", "Sofea", "Taufik", "06345478", "Intern Council", "1500", "CTS8")
-            //new Client("CTS8", "C22", "Ahmad Khuzaimi", "01453644", "300", "22/01/2023")
     );
 
     //Add New controller
@@ -146,9 +126,27 @@ public class GuiController implements Initializable {
         }
     }
 
-    // Add Textfield from Client
-    /*public void saveClient(ActionEvent event) {
-        Client newClient = new Client(idClient.getText(), NameFld.getText(), Clientcontact.getText(), paymentFld.getText(), idcaseFld2.getText(), paymentDate.getText());
-        tvClient.getItems().add(newClient);
-    }*/
+    public void CheckInOnAction (ActionEvent e){
+
+        String formatCheckIn;
+
+        LocalDateTime CheckIn = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        formatCheckIn = CheckIn.format(format);
+
+        CheckInTimeDisplay.setText("Time: "+formatCheckIn);
+    }
+
+    public void CheckOutOnAction (ActionEvent e){
+
+        String formatCheckOut;
+
+        LocalDateTime CheckOut = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        formatCheckOut = CheckOut.format(format);
+
+        CheckOutTimeDisplay.setText("Time: "+formatCheckOut);
+    }
+
+
 }

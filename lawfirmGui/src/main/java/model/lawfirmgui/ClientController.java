@@ -33,7 +33,7 @@ public class ClientController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Client tableview
-        tvClient.getColumns().addAll(tcidcase, tcidcase, tcName, tcClientcontact, tcPayment);
+        //tvClient.getColumns().addAll(tcidcase, tcidcase, tcName, tcClientcontact, tcPayment);
 
         final ObservableList<Client> data = FXCollections.observableArrayList(
                 new Client("CTS8", "C22", "Ahmad Khuzaimi", "01453644", "300"),
